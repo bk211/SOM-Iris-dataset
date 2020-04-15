@@ -3,6 +3,7 @@ Single layout 2d artificial neural network for Iris-dataset, based on Self-Organ
 
 # Dependencies
 This projet does not have any particulary dependencies, Make is highly recommanded in order to use the Makefile, otherwise you will have to compile by yourself.<br>
+This projet does run on windows and linux environement, however it's not guaranteed to run on macOS since I don't have an mac, so I haven't made any test on this operating system<br>
 
 # Compile and run
 Simply use the make command 
