@@ -12,3 +12,7 @@ https://en.wikipedia.org/wiki/Convolutional_neural_network#Neocognitron,_origin_
 https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf
 https://sites.google.com/view/ift-6135-h2020/lectures?authuser=0
 rectified linear units ReLU
+
+https://www.youtube.com/watch?v=py5byOOHZM8
+https://www.youtube.com/watch?v=BFdMrDOx_CM
+https://www.youtube.com/watch?v=TJlAxW-2nmI

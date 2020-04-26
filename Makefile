@@ -3,4 +3,4 @@ exec:	main.c
 run:	exec
 	./exec iris.data
 clean:
-	rm exec
+	rm exec exec.exe
