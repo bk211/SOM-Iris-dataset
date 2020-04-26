@@ -1,0 +1,10 @@
+*.toc
+*.aux
+*.out
+*.fls
+rapport.bcf
+rapport.blg
+rapport.bbl  
+rapport.bib  
+rapport-blx.bib  
+rapport.run.xml
