@@ -48,6 +48,30 @@
       \verb https://lrn.no-ip.info/other/books/neural/Neocognitron/1980_Neocognitron%20A%20Self-organizing%20Neural%20Network%20Model%20for%20a%20Mechanism%20of%20Pattern%20Recognition%20Unaffected%20by%20Shift%20in%20Position.pdf
       \endverb
     \endentry
+    \entry{HubelWiesel:2}{article}{}
+      \name{author}{2}{}{%
+        {{hash=7d865b35043addf71b2f76b232e0b8aa}{%
+           family={Hubel},
+           familyi={H\bibinitperiod}}}%
+        {{hash=d8e5ec701ae0c8a41c01a0b486900452}{%
+           family={Wiesel},
+           familyi={W\bibinitperiod}}}%
+      }
+      \strng{namehash}{30d60d7717e70050be909e7f2090ee6d}
+      \strng{fullhash}{30d60d7717e70050be909e7f2090ee6d}
+      \strng{bibnamehash}{30d60d7717e70050be909e7f2090ee6d}
+      \strng{authorbibnamehash}{30d60d7717e70050be909e7f2090ee6d}
+      \strng{authornamehash}{30d60d7717e70050be909e7f2090ee6d}
+      \strng{authorfullhash}{30d60d7717e70050be909e7f2090ee6d}
+      \field{sortinit}{H}
+      \field{sortinithash}{6db6145dae8dc9e1271a8d556090b50a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{MEDLINE}
+      \field{month}{10}
+      \field{title}{Receptive fields of single neurones in the cat's striate cortex.}
+      \field{year}{1959}
+    \endentry
   \enddatalist
 \endrefsection
 \endinput

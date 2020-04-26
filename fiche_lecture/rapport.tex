@@ -35,14 +35,15 @@ Puis je reviendrai à des sujets plus récente "Batch normalization" proposé pa
 Enfin je terminerai sur un article de Amir Rosenfeld, Richard Zemel et John K. Tsotsos qui pointe les limites rencontrées par les modèles CNN les plus moderne.
 
 \section{Néocognitron}
-\subsection{Présentation de l'auteur : Kunihiko Fukushima}
+\subsection{Présentation de l'auteur}
 M.Fukushima est un chercheur en informatique connue pour ses travaux dans le domaine du réseau de neuronne artificiel et du deep learning.
 Le plus célèbre étant son modèle de Néocognitron publié en 1980 \autocite{Fukushima:1}.
 
 \subsection{Présentation de l'article}
 Le néocognitron est un modèle élaboré depuis le modèle de cognitron publié par le même auteur en 1975. 
 Il s'agit d'un réseau de neuronne multi-couche auto-organisatrice. L'apprentissage n'est pas supervisée, c'est à dire que 
-les données ne sont pas étiquetées. Il s'inspire notamment des travaux de Hubel et Wiesel sur le système visuel animal (chat). A nos jour, la recherche a bien évidemment avancé depuis 1959, Le model d'Hubel et Wiesel n'est plus tout à fait exacte 
+les données ne sont pas étiquetées. Il s'inspire notamment des travaux de Hubel et Wiesel sur le système visuel animal (chat).
+\autocite{HubelWiesel:2}. A nos jour, la recherche a bien évidemment avancé depuis 1959, Le model d'Hubel et Wiesel n'est plus tout à fait exacte 
 mais reste intéressant dans les grandes lignes. Un des professeur en physiologie m'avait d'ailleurs présenté ces travaux quand j'étudiais encore à la 
 licence Science pour la santé à Paris Descartes quelques années auparavant. \\
 Le point important à retenir c'est que Hubel et Wiesel propose l'idée qu'un reseau de neuronne est 
@@ -59,8 +60,6 @@ La première constituée de cellules simples, l'auteur appelle cette couche "S-l
 Il est intéressant de noter que seul les synapses partant vers une "S-cell" ont la propriété de plasticité. La plasticité en neuroscience 
 est le terme pour désigner le capacité d'un neuronne à former et modifier ses connexions vers d'autre neuronne via les synapses. 
 
-
-
 \begin{figure}[H]
     \includegraphics[width=\linewidth]{img/fig1.png}
     \caption{Correspondence between the hierarchy model by Hubel and Wiesel, and the neural network of the neocognitron}
@@ -70,7 +69,57 @@ est le terme pour désigner le capacité d'un neuronne à former et modifier ses
 Comme vous pouvez le voir sur ce schéma, U0 est notre couche d'entrée, par la suite intervient une cascade de module constitué par différentes couches de cellules.
 Au sein d'une même module, les liens entre les neuronnes de différentes couches sont fixes, alors qu'à la jointure des 
 modules, ces liens sont modifiables et peuvent être amènés à évoluer au fur et à mesure de l'apprentissage.
-Tout cela nous permet de faire un parallèle avec le fonctionnement du cortex visuel et associatif. 
+Tout cela nous permet de faire un parallèle avec le fonctionnement du cortex visuel et associatif.
+\begin{figure}[H]
+    \includegraphics[width=\linewidth]{img/fig2.png}
+    \caption{formule de la sortie d'une cellule S}
+    \label{fig:L2}
+\end{figure}
+D'après cette formule, la sortie d'une cellue S situé à la couche k d'un module l de notre réseau dépends essentiellement 
+de $al(k(l-1), v, kl)$ et de $bl(kl)$ qui correspondent à l'efficacité des synapses exitatoire et inibitoire.\\
+Il est possible de rendre la cellule plus ou moins sélective à une patterne d'excitation en variant $rl$. \\
+En ce qui concerne le mécanisme d'auto-organisation, à chaque fois qu'une entrée arrive, des "S-cell" répresentatives sont selectionnées, et vont 
+voir renforcé leur synapses d'entrée. Au contraire ceux qui ne manifeste aucun sensibilité ne sont pas renforcé. Au fur et à mesure de l'apprentissage, 
+nous verrons alors apparaître sur le plan cellulaire des colonnes, une succession de zone qui sont sensible à un même stimulis sur différente couche.
+\begin{figure}[H]
+    \includegraphics[width=\linewidth]{img/fig3.png}
+    \caption{Relation between S-planes and S-columns within an S-laye}
+    \label{fig:L3}
+\end{figure}
+
+Ainsi, nous construisons un réseau qui dans les première niveau de profondeur ne va que reconnaitre des patterne simple et élementaire, et plus nous progressons 
+dans le réseau, les éléments basic se regroupe en motifs, jusqu'à l'obtention d'un "objet".\\
+Comme le schéma ci-dessous le montre, il y a la reconnaissance de trait basique puis dans les niveaux plus profondes, le motif de la lettre 'A' est 
+reconstruite. \\
+Ici, la connexion n'est pas total entre les différentes couche, il y a donc beaucoup moins d'information à traîter et la structure est plus légère.
+Au final, le réseau n'est pas si chargé, car les "S-columns" peuvent parfaitement s'entre croiser. Il est tout à fait possible que pour la lettre 
+'R' et 'B' partagent les même cellules comme ces 2 lettres sont proche au niveau de l'écriture. \\
+Enfin, notre réseau offre une tolérance vis à vis des déformations, changement d'orientation et changement de position car quelque soit 
+l'entrée présenté, il est divisé en sous composante puis reconstruite dans les profondeur.
+
+
+\begin{figure}[H]
+    \includegraphics[width=\linewidth]{img/fig4.png}
+    \caption{An example of the interconnections between ceils and the response of the cells after completion of self-organization}
+    \label{fig:L4}
+\end{figure}
+
+\begin{figure}[H]
+    \includegraphics[width=\linewidth]{img/fig5.png}
+    \caption{Some examples of distorted  stimulus patterns  which the neocognitron has correctly recognized, and the response of the final layer of the network }
+    \label{fig:L5}
+\end{figure}
+\begin{figure}[H]
+    \includegraphics[width=\linewidth]{img/fig6.png}
+    \caption{A display of an  example of the response of all the individual cells in the neocognitron}
+    \label{fig:L6}
+\end{figure}
+
+\section{Deep CNN}
+\subsection{Présentation des auteurs}
+
+
+
 \newpage
 \printbibliography
 \end{document}

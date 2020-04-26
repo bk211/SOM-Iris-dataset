@@ -8,3 +8,10 @@ rapport.bbl
 rapport.bib  
 rapport-blx.bib  
 rapport.run.xml
+rapport.bbl
+rapport.bcf
+rapport.blg
+rapport.fdb_latexmk
+rapport.log
+rapport.synctex.gz
+*.tex
