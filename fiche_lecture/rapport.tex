@@ -46,11 +46,15 @@ les données ne sont pas étiquetées. Il s'inspire notamment des travaux de Hub
 \autocite{HubelWiesel:2}. A nos jour, la recherche a bien évidemment avancé depuis 1959, Le model d'Hubel et Wiesel n'est plus tout à fait exacte 
 mais reste intéressant dans les grandes lignes. Un des professeur en physiologie m'avait d'ailleurs présenté ces travaux quand j'étudiais encore à la 
 licence Science pour la santé à Paris Descartes quelques années auparavant. \\
-Le point important à retenir c'est que Hubel et Wiesel propose l'idée qu'un reseau de neuronne est 
+Le point important à retenir c'est que Hubel et Wiesel propose l'idée qu'un réseau de neuronne 
+reste quand même traditionnel.\\
+ neuronne est 
 constitué de cellule "Simple" appelée "S-cells" et de cellule "Complex" appelée "C-cells".\\
 Pour être tout à fait précis, le neocognitron ne reconnais pas l'object complexe mais présente plutôt un 
 capacité à reconnaitre des patternes de stimuli précis après l'entraînement.\\
-Notre sujet présente une organisation étalé sur plusieurs couche, dans l'idée, il faut retenir qu'il s'agit d'un reseau organisé en cascade et hierarchisé.
+Notre sujet présente une organisation étalé sur plusieurs couche, dans l'idée, il faut retenir qu'il s'agit d'un réseau organisé neuronne 
+reste quand même traditionnel.\\
+ en cascade et hierarchisé.
 
 \subsection{Présentation de la structure}
 Au niveau de l'entrée, nous pouvons trouver des cellules photoreceptrices chargées de transmettre l'information. Si nous devons faire un rapprochement avec le réel, cela correspond aux rétines sensible à différentes stimulis lumineuse.\\
@@ -96,7 +100,11 @@ Au final, le réseau n'est pas si chargé, car les "S-columns" peuvent parfaitem
 'R' et 'B' partagent les même cellules comme ces 2 lettres sont proche au niveau de l'écriture. \\
 Enfin, notre réseau offre une tolérance vis à vis des déformations, changement d'orientation et changement de position car quelque soit 
 l'entrée présenté, il est divisé en sous composante puis reconstruite dans les profondeur.
-
+Nous pouvons déja voir ici les prémices du CNN, nous pouvons aussi remarquer que le réseau est neuronne 
+reste quand même traditionnel.\\
+ à sens unique, 
+sur les schémas ci-dessous par exemple, l'information va toujours de la gauche vers la droite, il n'y a qu'un seul mouvement, celui de feedfoward. \\
+Alors que sur les modèles CNN moderne, nous pouvons trouver une étape de backpropagation.
 
 \begin{figure}[H]
     \includegraphics[width=\linewidth]{img/fig4.png}
@@ -115,10 +123,38 @@ l'entrée présenté, il est divisé en sous composante puis reconstruite dans l
     \label{fig:L6}
 \end{figure}
 
-\section{Deep CNN}
+\section{Réseau neuronal convolutif}
 \subsection{Présentation des auteurs}
+Alex Krizhevsky, Ilya Sutskever et Geoffrey E. Hinton étaient des étudiants de l'université de toronto au moment du publication 
+de cette article \autocite{NIPS2012_4824}, J'ai préferé cette article plutôt qu'un des nombreuses publication de M.Yann Lecun car au niveau 
+du contenue cette article est plus simple à comprendre au niveau de la lecture.
+Le premier auteur travail maintenant chez Google, les 2 autres continuent à publier régulièrement des article jusqu'à ce jour.
 
+\subsection{Présentation l'article}
+\par Ce n'est pas eux qui inventent le CNN mais il est interessant de noter le bond gigantesque au niveau des performances des CNN sur ImageNet après 2012.
+Notamment pour la compétition ILSVRC-2012 les auteurs ont réalisé une performances de 15.3\% taux d'erreur alors que le second 
+du concours n'arrivait qu'à 26.2\%.\\
+L'article est populairement cité dans le domaine, google indique d'ailleurs que le nombre de citation dépasse les 60k.
+Le dataset utilisé ici est celui d'ImageNet qui est constitué à peu près de 15 millions d'image dans plus de 22 milles catégories.
+A l'opposé, le MNIST dataset de M.Yann Lecun ne contient que 60k exemples, évidemment il faut prendre en compte que la complexité 
+de l'information n'est pas pareil quand vous comparer des chiffres manuscrites et des images d'objet réel.
+Le progrès majeur apporté par cet article est qu'il s'agit d'une implémentation GPU de Deep CNN, La structure de leur réseau de neuronne 
+reste quand même traditionnel.
+\par L'avantage majeur du CNN est qu'il ne nécessite pas une connexion total entre les couches, il y a donc moins de paramètre et de poids à ajuster lors
+de l'apprentissage. Malgré ces qualités, le CNN reste gourmands en terme de mémoire et en performances car le produit de convolution est coûteuse à calculer.
+D'où l'implémentation sur le plateforme GPU, accompagné d'optimisations accrues pour le produit de convolution 2D. \\
+Le système prends en entrée une image RGB de dimension 256x256, une réadaptation de l'image a été effectué pour avoir des "patch" de dimension valide.
 
+\begin{figure}[H]
+    \includegraphics[width=\linewidth]{img/fig7.png}
+    \caption{An illustration of the architecture of our CNN, explicitly showing the delineation of responsibilitiesbetween the two GPUs. One GPU runs the layer-parts at the top of the figure while the other runs the layer-partsat the bottom. The GPUs communicate only at certain layers. The network’s input is 150,528-dimensional, andthe number of neurons in the network’s remaining layers is given by 253,440–186,624–64,896–64,896–43,264–4096–4096–1000.}
+    \label{fig:L7}
+\end{figure}
+Comme le montre le schéma ci-dessus le montre, le réseau de neuronne est constitué de 5 couches de convolution puis de 3 couches "fully-connected".
+2 Cartes graphiques sont nécessaire pour cet implémentation, chaque carte traîte ses couches à lui, une communication entre les 2 cartes graphiques n'est 
+possible qu'à une certaine couche précis. 
+
+\section{Conclusion}
 
 \newpage
 \printbibliography
