@@ -6,6 +6,8 @@
 \usepackage{array}
 \usepackage{biblatex}
 \usepackage{float}
+\usepackage{subcaption}
+
 \bibliography{rapport}
 
 \title{Fiche de lecture : Réseau neuronal convolutif}
@@ -31,7 +33,6 @@ Ce document est ma fiche de lecture sur le réseau neuronal convolutif (Convolut
 le cours de programmation pour l'intelligence artificiel enseigné par M.Jean-Jacques Mariage aux L3 de la licence informatique.\\
 Dans le plan géneral, je vais vous présenter le néocognitron, un ancêtre des CNN.\\
 Dans un second temps, je vais m'intéresser à une publication d'Alex \\Krizhevsky, Ilya Sutskever et Geoffrey E.Hinton sur la classfication d'image via un Deep Convolutional Neural Networks.\\
-Puis je reviendrai à des sujets plus récente "Batch normalization" proposé par Sergey Ioffe et Christian Szegedy, il s'agit de la méthode de regularization la plus moderne sur les CNN.
 Enfin je terminerai sur un article de Amir Rosenfeld, Richard Zemel et John K. Tsotsos qui pointe les limites rencontrées par les modèles CNN les plus moderne.
 
 \section{Néocognitron}
@@ -213,7 +214,7 @@ l'objet présente dans l'image.
 Comme vous pouvez le voir ci-dessus, le raisonnement machine est assez différente du raisonnement humain, dès la première couche convolution, les matrices résultante n'ont plus 
 de propriété spaciale ni sémantique. 
 
-Voici un exemple de résultat sur 
+Voici un exemple de résultat de classification pour le dataset ILSVRC-2010.
 
 \begin{figure}[H]
     \includegraphics[width=\linewidth]{img/fig11.png}
@@ -221,7 +222,98 @@ Voici un exemple de résultat sur
     \label{fig:L10}
 \end{figure}
 
+\section{The Elephant in the Room}
+\subsection{Présentation des auteurs}
+Amir Rosenfeld est un post-doc de l'université de Toronto et de l'université de York.\\
+Richard Zemel est professeur au département d'informatique de l'université de Toronto.\\
+John K.Tsotos est professeur au département d'ingénieurie electronique et informatique de l'université de Toronto.
+
+\subsection{Présentation de l'article}
+Cet article a pour sujet de présenter les familles d'erreur les plus commun dans l'état de l'art des 
+detecteur d'objet. La méthode utilisé est la transposition d'image dans une régions de l'image initial.
+Cette modification a pour impact des conséquences non local sur la détection de l'objet. \\
+Un déplacement positionnel du transplant semble affecter les résultats du détecteur, qui peut modifier l'identité de l'objet détecté.
+
+\subsection{Présentation de l'expérience}
+La méthode du détecteur d'object employé ici est le Faster-RCNN avec un NASNet backbone, en appliquant le programme sur 
+une image salon issue du Microsoft COCO object detection benchmark. \\
+Les auteurs ont donc littéralement transposé une image d'élephant dans cette image de salon à plusieurs
+coordonnées différentes. Ils rélèvent 3 phénomène majeur causé par cette transposition :\\
+\begin{itemize}
+    \item La detection est instable, l'object est tout simplement non détecté par le detecteur.
+    \item La nature de l'object est incorrect, il est dépendante de la location du transplant.
+    \item L'object cause des effets non-locale, les objects qui ne sont pas en chevauchement avec notre transplant peut changer d'identité, boîte de contour ou tout simplement 
+        dispaître du champs du detecteur.
+\end{itemize}
+\begin{figure}[H]
+    \includegraphics[width=\linewidth]{img/fig12.jpg}
+    \caption{Image de départ}
+    \label{fig:L11}
+\end{figure}
+
+\begin{figure}[H]
+    \includegraphics[width=\linewidth]{img/fig13.jpg}
+    \caption{Image après transplant de l'éléphant, l'object n'est pas detecté, pas d'incidence sur les autres objects }
+    \label{fig:L12}
+\end{figure}
+
+\begin{figure}[H]
+    \includegraphics[width=\linewidth]{img/fig14.jpg}
+    \caption{L'éléphant est deteté comme un objet "chaise", la tasse n'est plus detecté, l'objet "chair" est devenue "couch"}
+    \label{fig:L13}
+\end{figure}
+
+\begin{figure}[H]
+    \includegraphics[width=\linewidth]{img/fig15.jpg}
+    \caption{L'éléphant est detecté correctemment}
+    \label{fig:L14}
+\end{figure}
+
+Le résultat est plus impréssionnante si vous essayez du dupliquer certains objets du plan, nous arrivons à des résultats abérrantes.
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.4\linewidth}
+      \includegraphics[width=\linewidth]{img/fig17.png}
+      \caption{Image initial}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.4\linewidth}
+      \includegraphics[width=\linewidth]{img/fig18.png}
+      \caption{perte de detection}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.4\linewidth}
+        \includegraphics[width=\linewidth]{img/fig19.png}
+        \caption{résultat abbérante}
+      \end{subfigure}
+    \caption{Effets de la duplication}
+    \label{fig:L15}
+\end{figure}
+
+\subsection{Hypothèses des auteurs}
+Les auteurs ont donc proposé quelque hypothèses au vue de ces résultats:
+\begin{itemize}
+    \item L'occlusion partiel
+    \item "Out of Distribution Examples", les transplants peuvent être inconnue du reseau.
+    \item Perte de signal à cause des couches de pooling, un sous-échantillonage permet certe un gain en temps d'apprentissage, il y a aussi une perte d'information à ne pas négliger.
+    \item Raisonnement contextuel, il est encore rare de voir des classificateur qui intègre la notion d'analyse sémantique, mais nous pouvons voir ailleurs notamment chez les
+        les réseaux adverses génératifs.
+    \item "Non-Maximal Suppression", qui est une méthode de detection de zone d'interêt peut affecter la décision du programme.
+        Par exemple, un objet A qui disparait du detecteur à cause du transplant T peut avoir conséquence de garder l'objet B comme une zone d'interêt alors que B était supprimé dans la version initial à cause de son 
+        chevauchement avec A.
+    \item "Feature Interference", la zone d'interêt est souvent un rectangle, ce qui fait qu'il ne contient pas seulement l'objet d'interêt, il absorbe aussi les bruits environnante. Du coup l'opération 
+    de convolution peut avoir pour conséquence d'inclure les plans derrière l'objet. Dans un autre sens, cela permet d'ajouter une touche d'information contextuel à traîter qui peut être util si nous ne possèdons 
+    pas suffisamment d'information sur l'objet due à une occlusion partiel ou à sa faible résolution.
+\end{itemize}
+\subsection{Critiques de cet article}
+L'expérience est intéressante car il souligne certains limites des detecteurs d'objet moderne, cependant il ne propose malheureusement pas de solution à ces problèmes.
+Dans un autre sens, est-ce normal qu'un detecteur d'objet doit être capable de detecter certains abbération dont il n'a jamais fait face? 
+Il n'y a peut être pas assez d'exemple dans ce sens qui ont été présenté aux neuronnes, parler des résultats sans prendre en compte la nature et la quantité 
+de vecteur d'apprentissage n'est pas très convainquant. Le neuronnes a été entrainé par des exemples réel et vous lui présenter des images sémantiquement fausse.\\
+C'est bien de se poser la question de pourquoi vous obtenez des résultats abbérante si vous transplanter un éléphant à côté d'un avion qui vole. Mais avez vous déja vue 
+un éléphant qui vole à côté d'un avion? \\
+Néaumoins, il nous permet de se poser le problématique de quel-est la réaction que nous espérons voir quand une situation comme telle se produisait? 
+
 \section{Conclusion}
+
 
 \newpage
 \printbibliography
