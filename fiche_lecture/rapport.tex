@@ -6,7 +6,7 @@
 \usepackage{array}
 \usepackage{biblatex}
 \usepackage{float}
-\bibliography{rapport} 
+\bibliography{rapport}
 
 \title{Fiche de lecture : Réseau neuronal convolutif}
 \author{Chaolei Cai
@@ -125,8 +125,8 @@ Alors que sur les modèles CNN moderne, nous pouvons trouver une étape de backp
 
 \section{Réseau neuronal convolutif}
 \subsection{Présentation des auteurs}
-Alex Krizhevsky, Ilya Sutskever et Geoffrey E. Hinton étaient des étudiants de l'université de toronto au moment du publication 
-de cette article \autocite{NIPS2012_4824}, J'ai préferé cette article plutôt qu'un des nombreuses publication de M.Yann Lecun car au niveau 
+Alex Krizhevsky, Ilya Sutskever et Geoffrey E. Hinton étaient des étudiants de l'université de toronto au moment de la publication 
+de cette article \autocite{NIPS2012_4824:3}, J'ai préferé cette article plutôt qu'un des nombreuses publication de M.Yann Lecun car au niveau 
 du contenue cette article est plus simple à comprendre au niveau de la lecture.
 Le premier auteur travail maintenant chez Google, les 2 autres continuent à publier régulièrement des article jusqu'à ce jour.
 
@@ -160,7 +160,7 @@ possible qu'à une certaine couche précis.
 à la fin vous obtiendrez une sorte de carte 2d constitué de neuronne. Ces derniers auront une réponse spécifique à un stimulis précis.
 \par La manière standard de corriger la sortie d'un neuronne est d'utiliser une fonction $f(x) = tanh(x)$ ou encore 
 $f(x) = (1 + e^{-x})^{-1}$.\\
-Alors que nos auteurs ont previlegier la méthode de Rectified Linear Units (ReLUs). \autocite{NairHinton} 
+Alors que nos auteurs ont previlegier la méthode de Rectified Linear Units (ReLUs). \autocite{NairHinton:4}
 Mathématiquement, il s'agit de la fonction $f(x) = max(0,x)$. La méthode a effectivement un nom très vendeur mais en réalité
 il peut être résumé dans le grande lignes par ce pseudo-code:
 \begin{verbatim}
@@ -206,7 +206,7 @@ l'objet présente dans l'image.
 
 \begin{figure}[H]
     \includegraphics[width=\linewidth]{img/fig10.png}
-    \caption{96 convolutional kernels of size11×11×3learned by the first convolutionallayer on the224×224×3input images. Thetop 48 kernels were learned on GPU 1 whilethe bottom 48 kernels were learned on GPU2}
+    \caption{96 convolutional kernels of size 11x11x3 learned by the first convolutionallayer on the 224x224x3 input images. Thetop 48 kernels were learned on GPU 1 whilethe bottom 48 kernels were learned on GPU2}
     \label{fig:L9}
 \end{figure}
 
@@ -217,7 +217,7 @@ Voici un exemple de résultat sur
 
 \begin{figure}[H]
     \includegraphics[width=\linewidth]{img/fig11.png}
-    \caption{Eight ILSVRC-2010 test images and the five labels considered most probable by our model.The correct label is written under each image, and the probability assigned to the correct label is also shownwith a red bar (if it happens to be in the top 5)}
+    \caption{8 ILSVRC-2010 test images and the five labels considered most probable by our model.The correct label is written under each image, and the probability assigned to the correct label is also shownwith a red bar (if it happens to be in the top 5)}
     \label{fig:L10}
 \end{figure}
 
