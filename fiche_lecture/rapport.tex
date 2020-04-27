@@ -145,6 +145,8 @@ de l'apprentissage. Malgré ces qualités, le CNN reste gourmands en terme de m�
 D'où l'implémentation sur le plateforme GPU, accompagné d'optimisations accrues pour le produit de convolution 2D. \\
 Le système prends en entrée une image RGB de dimension 256x256, une réadaptation de l'image a été effectué pour avoir des "patch" de dimension valide.
 
+
+\subsection{Présentation de la structure}
 \begin{figure}[H]
     \includegraphics[width=\linewidth]{img/fig7.png}
     \caption{An illustration of the architecture of our CNN, explicitly showing the delineation of responsibilitiesbetween the two GPUs. One GPU runs the layer-parts at the top of the figure while the other runs the layer-partsat the bottom. The GPUs communicate only at certain layers. The network’s input is 150,528-dimensional, andthe number of neurons in the network’s remaining layers is given by 253,440–186,624–64,896–64,896–43,264–4096–4096–1000.}
@@ -152,7 +154,72 @@ Le système prends en entrée une image RGB de dimension 256x256, une réadaptat
 \end{figure}
 Comme le montre le schéma ci-dessus le montre, le réseau de neuronne est constitué de 5 couches de convolution puis de 3 couches "fully-connected".
 2 Cartes graphiques sont nécessaire pour cet implémentation, chaque carte traîte ses couches à lui, une communication entre les 2 cartes graphiques n'est 
-possible qu'à une certaine couche précis. 
+possible qu'à une certaine couche précis.
+\par Le coeur du CNN est le produit de convolution, donnant une image d'entrée de dimension $a*b$, la première couche de convolution va y passer et produire 
+à son tour plusieurs sous image qui seras plus petite à cause du filtre. Au fur et à mesure des calcules, plus vous avancer dans la profondeur du réseau, plus les neuronnes seront petit, 
+à la fin vous obtiendrez une sorte de carte 2d constitué de neuronne. Ces derniers auront une réponse spécifique à un stimulis précis.
+\par La manière standard de corriger la sortie d'un neuronne est d'utiliser une fonction $f(x) = tanh(x)$ ou encore 
+$f(x) = (1 + e^{-x})^{-1}$.\\
+Alors que nos auteurs ont previlegier la méthode de Rectified Linear Units (ReLUs). \autocite{NairHinton} 
+Mathématiquement, il s'agit de la fonction $f(x) = max(0,x)$. La méthode a effectivement un nom très vendeur mais en réalité
+il peut être résumé dans le grande lignes par ce pseudo-code:
+\begin{verbatim}
+    if input > 0:
+	    return input
+    else:
+	    return 0
+\end{verbatim}
+
+
+\begin{figure}[H]
+    \includegraphics[width=\linewidth]{img/fig8.png}
+    \caption{Evolution du taux d'erreur en fonction du cycle sur le dataset CIFAR-10, Trait continue: CNN à 4 couches avec ReLUs, trait discontinue: réseau équivalent avec tanh}
+    \label{fig:L8}
+\end{figure}
+Comme vous pouvez le voir sur ce schéma, en utilisant les ReLUs, nous atteingnons les 25\% taux d'erreur six fois plus vite que la méthode classique.
+\par En dehors de ces 2 couches, les auteurs utilisent aussi une couche de pooling (mise en commun), cela permet de réduire la quantité d'information présente sur l'échantillon et de produire 
+une sous échantillon plus petit, cela permet d'améliorer la puissance de calcul, au détriment de la perte d'une partie d'information. \\
+Il est interéssant de noter que nos auteurs utilisent un filtre de chevauchement "Overlapping Pooling" plutôt qu'un filtre classique de pooling. 
+Dans un processus normal de pooling, l'image est d'abord divisé en grille de dimension zxz, à cela nous fesont passer un filtre de taile s à un pas constant de z , les filtres se croisent jamais. \\
+Alors que si vous définissez le pas comme s<z, vous obtenez un parcours de l'image où les les filtres se chevauchent en leur bordure. Les auteurs ont observé alors que le 
+risque de surapprentissage est plus basse avec cette méthode.
+
+\par Dans ce modèle, il y a d'abord l'application de 96 matrices de convolution de dimension 11x11x3 avec un pas de 4 pixels. 
+\\Puis la seconde couche de convolution utilise 256 matrices de dimension 5x5x48.
+\\La troisième couche nécessite 384 matrices de dimension 3x3x256.
+\\La quatrième couche nécessite 384 matrices de dimension 3x3x196.
+\\Enfin la cinquième couche nécessite 256 matrices de dimension 3x3x192.
+\\Finalement, les 3 dernières couche "Fully-connected" sont constitué de 4096 neurones chacun.
+
+\par Cette construction de réseau présente près de 60 millions de paramètre, alors que le dataset ILSVRC ne propose que 1000 classes de résultat. 
+Ce qui a pousser les auteurs à chercher une solution face au problème du surapprentissage.\\
+Une première solution est d'augmenter le nombre de donnée présenté via des transformation préservant le label de l'image. 
+Pour cela, les auteurs ont découpé l'image d'entrée de dimension 256x256 sous plusieurs sous-image de dimension 224x224, cela permet d'augmenter la taille 
+du vecteur d'apprenti- ssage par 2048. Il est possible d'alterer l'image de départ avec des bruits géneré aléatoirement via une gaussienne.\\
+Enfin la deuxième solution proposé est le "dropout", il consiste à mettre 0 à la sortie des neuronnes de la couche caché avec une probabilité de 0.5.
+Sans cette technique, le coût sur le temps d'apprentissage aurait doublé car il faudra alors doubler le nombre de cycle pour avoir des résutats qui converge.
+
+\par A la fin de tous ces couche de convolution, pooling et de dropout, nous obtenons une carte neuronnal sophitiqué où l'interprétation de ces résultat nécessite 
+l'emploi des couches entièrement connectéee (fully-connected), ces neuronnes particulières ont une connexion total vers toutes les sorties de la couché prédecédente, 
+c'est à ce niveau que les résultats sont traduite pour être humainement compréhensible, dans notre exemple, le résultat est la détermination de la classe qu'appartient 
+l'objet présente dans l'image. 
+
+\begin{figure}[H]
+    \includegraphics[width=\linewidth]{img/fig10.png}
+    \caption{96 convolutional kernels of size11×11×3learned by the first convolutionallayer on the224×224×3input images. Thetop 48 kernels were learned on GPU 1 whilethe bottom 48 kernels were learned on GPU2}
+    \label{fig:L9}
+\end{figure}
+
+Comme vous pouvez le voir ci-dessus, le raisonnement machine est assez différente du raisonnement humain, dès la première couche convolution, les matrices résultante n'ont plus 
+de propriété spaciale ni sémantique. 
+
+Voici un exemple de résultat sur 
+
+\begin{figure}[H]
+    \includegraphics[width=\linewidth]{img/fig11.png}
+    \caption{Eight ILSVRC-2010 test images and the five labels considered most probable by our model.The correct label is written under each image, and the probability assigned to the correct label is also shownwith a red bar (if it happens to be in the top 5)}
+    \label{fig:L10}
+\end{figure}
 
 \section{Conclusion}
 
