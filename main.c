@@ -32,6 +32,7 @@ struct flower
 
 typedef flower_t ** network;
 
+//liste chainée
 typedef struct node node_t;
 typedef struct node * list;
 struct node {
@@ -40,7 +41,7 @@ struct node {
   list next;
 };
 
-
+//tete de liste
 typedef struct head head_t;
 struct head{
     double best_diff;
@@ -49,11 +50,12 @@ struct head{
 };
 
 
-
+//affiche une fleur
 void print_fleur(flower_t f){
     printf("%f %f %f %f %d\n", f.data[0],f.data[1],f.data[2],f.data[3], f.type);
 }
 
+//remplie le vecteur à l'indice avec les données
 void fill_vector(int indice, flower_t * vec, int datasize, double * data, char * name){
     vec[indice].data = (double*)malloc(vec_att_size * sizeof(double));
     int i;
@@ -74,6 +76,7 @@ void fill_vector(int indice, flower_t * vec, int datasize, double * data, char *
     }
 }
 
+//moyenne d'une colonne
 double get_average(flower_t * vec, int col_number, int size){
     double ret = 0;
     int i;
@@ -85,6 +88,7 @@ double get_average(flower_t * vec, int col_number, int size){
     return ret;
 }
 
+//norme d'une fleur 
 double get_norme(flower_t vec, int att_size){
     double ret = 0;
     int i;
@@ -95,6 +99,7 @@ double get_norme(flower_t vec, int att_size){
     return ret;
 }
 
+//normalise un vecteur vec, le resultat normalisé est dans ret
 void normalize(flower_t * vec, int size, int att_size, flower_t * ret){
     int i,j;
     for (i = 0; i < size; i++){
@@ -106,12 +111,14 @@ void normalize(flower_t * vec, int size, int att_size, flower_t * ret){
     }
 }
 
+//retourne un coeff aléatoire selon le max et min
 double get_random_weight(){
     double result = random_weight_min + ((double) rand() / (double) RAND_MAX) * (double)(random_weight_max - random_weight_min);
     /*printf("%f ", result);*/
     return result;
 }
 
+//remplie aléatoirement un neurone
 void fill_neuron(flower_t * neu, flower_t av_neu, int att_size){
     neu->data = (double*) malloc(att_size * sizeof(double));
     int i;
@@ -121,7 +128,7 @@ void fill_neuron(flower_t * neu, flower_t av_neu, int att_size){
         neu->type = 0;
     }
 }
-
+//affiche le reseau
 void print_network(network r){
     int i,j;
     for (i = 0; i < 6; i++){
@@ -132,6 +139,7 @@ void print_network(network r){
     }
 }
 
+//crée un reseau de neuronne
 network create_neurons(flower_t vec_av, int neu_size, int att_size, int sizeX, int sizeY){
 
     network result = (flower_t **) malloc( sizeY * sizeof(flower_t*));
@@ -155,6 +163,7 @@ network create_neurons(flower_t vec_av, int neu_size, int att_size, int sizeX, i
         
 }
 
+//compare 2 fleur en fct de la distance euclidienne
 double compare_neuronne(flower_t f1, flower_t f2, int att_size){
     double result = 0;
     int i;
@@ -165,6 +174,7 @@ double compare_neuronne(flower_t f1, flower_t f2, int att_size){
     return result;
 }
 
+//remplie le tableau d'indice aléatoirement
 void fill_random_index_arr(int * indice,int size){
     int i;
     for ( i = 0; i < size; i++){
@@ -180,7 +190,7 @@ void fill_random_index_arr(int * indice,int size){
     }
 }
 
-
+//crée un noeud 
 list create_node(double diff, int y, int x){
     list l;
     l = (list) malloc(sizeof(node_t));
@@ -191,7 +201,7 @@ list create_node(double diff, int y, int x){
     /*printf("CN :x = %d y= %d diff= %f\n", l->x, l->y, l->diff);*/
     return l;
 }
-
+//retourne le noeud à l'indice index
 list get_node(list h, int index){
     list result = h;
     assert(index >=0);
@@ -201,7 +211,7 @@ list get_node(list h, int index){
     }
     return result;
 }
-
+//affiche la liste 
 void print_list(list l){
     if(l != NULL){
         printf("x = %d y= %d diff= %f\n", l->x, l->y, l->diff);
@@ -210,6 +220,7 @@ void print_list(list l){
     }
 }
 
+//crée un nouveau noeud et le met à la tête de liste
 void push_front(head_t * head, double diff, int y, int x){
     
     
@@ -240,6 +251,7 @@ void push_front(head_t * head, double diff, int y, int x){
     
 }
 
+//choisit un best match dans la liste chainée
 void select_best_match(int * x, int *y, head_t *h){
     /*print_list(h->next);*/
     int choice = rand() % h->counter;
@@ -249,12 +261,14 @@ void select_best_match(int * x, int *y, head_t *h){
     /*printf("[%d %d] [%d %d]\n", *x, *y, chosen_node->x, chosen_node->y);*/
 }
 
+// libère la mémoire de la liste chainée
 void free_list(list node){
     if(node->next)
         free_list(node->next);
     free(node);
 }
 
+//trouve le best match, ses coordonnées sont affecté à x et y
 void find_best_match(int * x, int *y, network neu, flower_t data, int att_size,int sizeX, int sizeY){
     head_t head_list;
     head_list.best_diff = 999.0;
@@ -279,6 +293,7 @@ void find_best_match(int * x, int *y, network neu, flower_t data, int att_size,i
     free_list(head_list.next);
 }
 
+//propage l'information gagnat parmi le voisinage 
 void propagate(network neu, int att_size, flower_t learning_data, int * neighbours, int size, double alpha){
     int i,j;
     for ( i = 0; i < size; i+=2){ /* for each neighbours*/
@@ -292,7 +307,7 @@ void propagate(network neu, int att_size, flower_t learning_data, int * neighbou
     
 }
 
-
+//retourne un tableau de coordonée xy qui contient tous les voisins
 int find_neighbours(network neu, int neu_size, int sizeX, int sizeY, int winX, int winY, int * storage, int radius){
     int size = 0;
     int beginX = ((winX - radius) > 0) ? (winX - radius) : 0;
@@ -311,6 +326,7 @@ int find_neighbours(network neu, int neu_size, int sizeX, int sizeY, int winX, i
     return size;
 }
 
+//cycle d'apprentissage
 void learning_cycle(network neurons, int size, int sizeX, int sizeY, int att_size,flower_t * learning_vec, int learning_vec_size, int * index, int index_size, int * neighbours, double prop_alpha, int neighbours_radius){
     int x, y;
     fill_random_index_arr(index, index_size);
@@ -330,7 +346,7 @@ void learning_cycle(network neurons, int size, int sizeX, int sizeY, int att_siz
     }    
 }
 
-
+//determine la nature du neurone 
 void mark_neurons(network neurons, int sizeX, int sizeY,flower_t * learning_vec,int vec_size, int att_size, int * index){
     int x, y;
     int i;
@@ -341,7 +357,8 @@ void mark_neurons(network neurons, int sizeX, int sizeY,flower_t * learning_vec,
         }
     }
 }
-    
+
+//affiche le résultat du reseau de neuronne 
 void show_result(network neurons, int sizeX, int sizeY){
     int tab[4] = {0, 0,0,0};
     int i,j;
@@ -399,6 +416,7 @@ int main(int argc, char const *argv[]){
 
     /*for (size_t i = 0; i < 150; i++){print_fleur(vec_data[i]);}*/
     
+    //normalisation
     normalize(vec_data, vec_size, vec_att_size, normalized_vec_data);
     /*for (size_t i = 0; i < 150; i++){print_fleur(normalized_vec_data[i]);}*/
 
@@ -414,7 +432,7 @@ int main(int argc, char const *argv[]){
 
     /*print_fleur(vec_average);*/
     
-    
+    //crée et initialise le réseau de neurone avec le vecteur moyen
     network neurons = create_neurons(vec_average, neu_size, vec_att_size , neu_sizeX, neu_sizeY);
     assert(neurons);
     
@@ -429,24 +447,27 @@ int main(int argc, char const *argv[]){
     /*printf("=> %f \n", compare_neuronne(neurons[0][0], neurons[0][1], vec_att_size));
     */
     
-    
+    //allocation mémoire pour le tableau de voisins
     int * neighbours = (int*) malloc(2 * (2*learning_prop_radius+1) * (2*learning_prop_radius+1) * sizeof(int));
     assert(neighbours);
 
+    //cycle d'apprentissage
     double learning_step = learning_alpha / nb_learning_cycle;
     double k;
     for (k = learning_alpha; k > 0; k -= learning_step){
         learning_cycle(neurons, neu_size, neu_sizeX, neu_sizeY, vec_att_size , normalized_vec_data, vec_size, index, vec_size, neighbours, k, learning_prop_radius);
     }
     
+    //cycle de rafinage
     double refine_step = refine_alpha / nb_refine_cycle;
     for ( k = refine_alpha; k > 0; k -= refine_step){
         learning_cycle(neurons, neu_size, neu_sizeX, neu_sizeY, vec_att_size , normalized_vec_data, vec_size, index, vec_size, neighbours, k, refine_prop_radius);
     }
     
-
+    //melange une dernière fois le tableau d'indice
     fill_random_index_arr(index,vec_size);
 
+    //marque les neuronnes et affiche le resultat
     mark_neurons(neurons, neu_sizeX, neu_sizeY, normalized_vec_data, vec_size, vec_att_size, index);
     show_result(neurons, neu_sizeX, neu_sizeY);
     

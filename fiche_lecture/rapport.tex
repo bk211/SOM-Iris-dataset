@@ -235,10 +235,10 @@ Cette modification a pour impact des conséquences non local sur la détection d
 Un déplacement positionnel du transplant semble affecter les résultats du détecteur, qui peut modifier l'identité de l'objet détecté.
 
 \subsection{Présentation de l'expérience}
-La méthode du détecteur d'object employé ici est le Faster-RCNN avec un NASNet backbone, en appliquant le programme sur 
+La méthode du détecteur d'objet employé ici est le Faster-RCNN avec un NASNet backbone, en appliquant le programme sur 
 une image salon issue du Microsoft COCO object detection benchmark. \\
 Les auteurs ont donc littéralement transposé une image d'élephant dans cette image de salon à plusieurs
-coordonnées différentes. Ils rélèvent 3 phénomène majeur causé par cette transposition :\\
+coordonnées différentes. Ils rélèvent 3 phénomène majeur causé par cette transposition :
 \begin{itemize}
     \item La detection est instable, l'object est tout simplement non détecté par le detecteur.
     \item La nature de l'object est incorrect, il est dépendante de la location du transplant.
@@ -313,7 +313,14 @@ un éléphant qui vole à côté d'un avion? \\
 Néaumoins, il nous permet de se poser le problématique de quel-est la réaction que nous espérons voir quand une situation comme telle se produisait? 
 
 \section{Conclusion}
+Dans le monde de la recherche, il y a deux avis divergeante concernant le CNN, certains pensent qu'il s'agit d'un mirage comme le fut les reseau de neuronne artificiel 
+dans les années 1980, d'autres, plus optimiste pensent qu'il s'agit de la dernière révolution dans le domain et que cela va changer radicalement notre 
+manière de penser. Personnellement, je suis plutôt optimiste car il existe de plus en plus d'application concret pour les CNN.
+L'époque où le monde s'emerveillait devant les performances du CNN à distinguer les chiffres numérique est quand même loin derrière.
+De nos jours, le CNN a trouvé des applications passant du simple classificateur d'objet à l'imagerie médicale comme le diagnostique de tumeur.
 
+\section{Remerciements}
+Je tiens à remercier Téo Orthlieb pour m'avoir aidé dans mes recherches et qui m'a partagé ses supports de cours de son Master en informatique à l'université de Montréal. 
 
 \newpage
 \printbibliography

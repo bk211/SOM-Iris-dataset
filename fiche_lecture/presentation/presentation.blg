@@ -1,0 +1,21 @@
+[0] Config.pm:304> INFO - This is Biber 2.13
+[0] Config.pm:307> INFO - Logfile is 'presentation.blg'
+[48] biber-MSWIN32:315> INFO - === 
+[78] Biber.pm:375> INFO - Reading 'presentation.bcf'
+[223] Biber.pm:905> INFO - Found 7 citekeys in bib section 0
+[242] Biber.pm:4196> INFO - Processing section 0
+[244] Utils.pm:75> INFO - Globbing data source 'rapport.bib'
+[255] Utils.pm:91> INFO - Globbed data source 'rapport.bib' to rapport.bib
+[268] Biber.pm:4373> INFO - Looking for bibtex format file 'rapport.bib' for section 0
+[272] bibtex.pm:1462> INFO - LaTeX decoding ...
+[292] bibtex.pm:1281> INFO - Found BibTeX data source 'rapport.bib'
+[293] Utils.pm:300> WARN - Duplicate entry key: 'rosenfeld2018elephant:5' in file 'rapport.bib', skipping ...
+[298] Utils.pm:300> WARN - month field 'April' in entry 'Fukushima:1' is not an integer - this will probably not sort properly.
+[302] Utils.pm:300> WARN - month field 'October' in entry 'HubelWiesel:2' is not an integer - this will probably not sort properly.
+[367] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[367] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[367] Biber.pm:4024> INFO - Sorting list 'nty/global//global/global' of type 'entry' with template 'nty' and locale 'en-US'
+[367] Biber.pm:4030> INFO - No sort tailoring available for locale 'en-US'
+[392] bbl.pm:648> INFO - Writing 'presentation.bbl' with encoding 'UTF-8'
+[398] bbl.pm:751> INFO - Output to presentation.bbl
+[409] Biber.pm:110> INFO - WARNINGS: 3
