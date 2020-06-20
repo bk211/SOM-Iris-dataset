@@ -58,6 +58,20 @@ void print_fleur(flower_t f){
     printf("%f %f %f %f %d\n", f.data[0],f.data[1],f.data[2],f.data[3], f.type);
 }
 
+
+/* compare 2 chaine de charactere, re-implementation de strcmp
+retourne 1 si identique 0 sinon
+*/
+int my_str_cmp(char * src, char * src2, int size_of_src2){
+    int i;
+    for (i = 0; i < size_of_src2; i++){
+        if(src[i] != src2[i])
+            return 0;
+    }
+    return 1;
+}
+
+
 /*remplie le vecteur à l'indice avec les données
 */
 void fill_vector(int indice, flower_t * vec, int datasize, double * data, char * name){
@@ -66,7 +80,22 @@ void fill_vector(int indice, flower_t * vec, int datasize, double * data, char *
     for (i = 0; i < datasize; i++){
         vec[indice].data[i] = data[i];
     }
+    
+    if(my_str_cmp(name, "Iris-setosa",11)){
+        vec[indice].type = 1;
+    }else if(my_str_cmp(name, "Iris-versicolor",15)){
+        vec[indice].type = 2;
+    }else if(my_str_cmp(name, "Iris-virginica",14)){
+        vec[indice].type = 3;
+    }
+    else{
+        printf("<%s>\n",name);
+        fprintf(stderr,"erreur de reconnaissance de fleur\n");
+        exit(1);
+    }
 
+    /*ancienne version avec strcomp, visiblement il y a un pb l'identification des chaines*/
+    /* 
     if(strcmp(name, "Iris-setosa\n") == 0){
         vec[indice].type = 1;
     }else if(strcmp(name, "Iris-versicolor\n") == 0){
@@ -77,7 +106,7 @@ void fill_vector(int indice, flower_t * vec, int datasize, double * data, char *
         printf("<%s>\n",name);
         fprintf(stderr,"unknow type\n");
         exit(1);
-    }
+    }*/
 }
 
 /*moyenne d'une colonne
